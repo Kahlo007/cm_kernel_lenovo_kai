@@ -115,7 +115,7 @@ static int s5k5cag_write_reg(struct i2c_client *client, u16 addr, u16 val)
 static int s5k5cag_reg_poll16(struct i2c_client *client, u16 write_reg, u16 write_val, u16 read_reg,
                               u16 mask, u16 val, int delay, int timeout)
 {
-	    u16 currval;
+	    u16 currval = 0;
 			while (timeout) 
 			{
 	
@@ -271,11 +271,11 @@ static int s5k5cag_set_mode(struct s5k5cag_info *info, struct sensor_mode *mode)
 			else if(mode->xres==2048&&mode->yres==1536)
 				config_no = 4;
 			
-	printk("[s5k5cag][context_B:1] %s: xres=%u, yres=%u,config_no=%d \n",
-			__func__, mode->xres, mode->yres,config_no);
+	printk("[s5k5cag][context_B:1] %s: xres=%u, yres=%u",
+			__func__, mode->xres, mode->yres);
 			
 			s5k5cag_write_reg(info->i2c_client, 0x002A, 0x0244);
-			s5k5cag_write_reg(info->i2c_client, 0x0F12, config_no);
+			
 		  s5k5cag_write_reg(info->i2c_client, 0x002A, 0x0240);
 		  s5k5cag_write_reg(info->i2c_client, 0x0F12, 0x0001);
 		  s5k5cag_write_reg(info->i2c_client, 0x002A, 0x0230);

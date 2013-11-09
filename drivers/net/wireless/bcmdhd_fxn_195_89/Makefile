@@ -9,7 +9,7 @@ DHDCFLAGS = -Wall -Wstrict-prototypes -Dlinux -DBCMDRIVER                     \
 	-DKEEP_ALIVE -DPKT_FILTER_SUPPORT     \
 	-DEMBEDDED_PLATFORM           \
 	-DSET_RANDOM_MAC_SOFTAP -DWL_CFG80211_STA_EVENT                       \
-	-Idrivers/net/wireless/bcmdhd -Idrivers/net/wireless/bcmdhd_fxn_195_89/include
+	-Idrivers/net/wireless/bcmdhd_fxn_195_89 -Idrivers/net/wireless/bcmdhd_fxn_195_89/include
 
 ifeq ($(CONFIG_BCMDHD_WIFI_CONTROL_FUNC),y)
 DHDCFLAGS += -DCONFIG_WIFI_CONTROL_FUNC

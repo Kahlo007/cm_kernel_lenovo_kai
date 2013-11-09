@@ -441,7 +441,7 @@ static struct s5k5cag_reg Exposure_2[] = {
 {0x0028, 0x7000},
 {0x002a, 0x020C},
 {0x0f12, 0x0040},
-{0x0f12, 0x0000},
+{0x0f12, 0x0030},
 {0x002A, 0x0F70},
 {0x0F12, 0x0046},
 {SENSOR_TABLE_END, 0x0000}
@@ -452,7 +452,7 @@ static struct s5k5cag_reg Exposure_1[] = {
 {0x0028, 0x7000},
 {0x002a, 0x020C},
 {0x0f12, 0x0020},
-{0x0f12, 0x0000},
+{0x0f12, 0x0030},
 {0x002A, 0x0F70},
 {0x0F12, 0x0043},
 {SENSOR_TABLE_END, 0x0000}
@@ -463,7 +463,7 @@ static struct s5k5cag_reg Exposure_0[] = {
 {0x0028, 0x7000},
 {0x002a, 0x020C},
 {0x0f12, 0x0000},
-{0x0f12, 0x0000},
+{0x0f12, 0x0030},
 {0x002A, 0x0F70},
 {0x0F12, 0x0040},
 {SENSOR_TABLE_END, 0x0000}
@@ -474,7 +474,7 @@ static struct s5k5cag_reg Exposure_Negative_1[] = {
 {0x0028, 0x7000},
 {0x002a, 0x020C},
 {0x0f12, 0xffdc},
-{0x0f12, 0x0000},
+{0x0f12, 0x0030},
 {0x002A, 0x0F70},
 {0x0F12, 0x0038},
 {SENSOR_TABLE_END, 0x0000}
@@ -485,7 +485,7 @@ static struct s5k5cag_reg Exposure_Negative_2[] = {
 {0x0028, 0x7000},
 {0x002a, 0x020C},
 {0x0f12, 0xffb8},
-{0x0f12, 0x0000},
+{0x0f12, 0x0030},
 {0x002A, 0x0F70},
 {0x0F12, 0x002f},
 {SENSOR_TABLE_END, 0x0000}
@@ -531,7 +531,8 @@ static struct s5k5cag_reg sport[] = {
 {0x0F12, 0x0200},   //MaxAnGain4 //                                         
 {0x002A, 0x0544},                                                           
 {0x0F12, 0x0100},                                                           
-{0x0F12, 0x8000},                                                           
+//{0x0F12, 0x8000},                                                           
+{0x0F12, 0x0600},	//0911 for noise                                                           
 {0x002A, 0x04B4},                                                           
 {0x0F12, 0x0001},                                                           
 {0x0F12, 0x00C8},                                                           
@@ -595,8 +596,10 @@ static struct s5k5cag_reg sport_off[] = {
 {0x002A, 0x0544},                                                                                                                     
 //{0x0F12, 0x0100},                                                                                                                     
 //{0x0F12, 0x8000},                                                                                                                     
-{0x0F12, 0x0200},                                                                                                                     
-{0x0F12, 0x1000},                                                                                                                     
+//{0x0F12, 0x0200},                                                                                                                     
+//{0x0F12, 0x1000},                                                                                                                     
+{0x0F12, 0x0100}, //0911 for noise                                                                                                                    
+{0x0F12, 0x0600}, //0911 for noise                                                                                                                    
 {0x002A, 0x04B4},                                                                                                                     
 //{0x0F12, 0x0001},                                                                                                                     
 //{0x0F12, 0x0064},                                                                                                                     
@@ -1913,38 +1916,40 @@ static struct s5k5cag_reg initial_list[] = {
 
 //Set preview exposure time
 {0x002A, 0x0530}, 
-{0x0F12, 0xD000},     //D000 3415//#lt_uMaxExp1 			30ms
-{0x0F12, 0x0000},
-{0x0F12, 0xD000},     //D000 6590//#lt_uMaxExp2 		  	40ms
-{0x0F12, 0x0000},
+{0x0F12, 0x3415},     //33.33uS
+{0x002A, 0x0534},              
+{0x0F12, 0x682A},     //66.66uS
+//{0x0F12, 0x0000},
 {0x002A, 0x167C}, 
-{0x0F12, 0xD000},     //D000 9AB0//#evt1_lt_uMaxExp3 	40ms
-{0x0F12, 0x0000},
-{0x0F12, 0xD000},     //D000 3880//#evt1_lt_uMaxExp4 	40ms
-{0x0F12, 0x0000},     //0001
+{0x0F12, 0x8235},     //83.325uS 
+{0x002A, 0x1680},                
+{0x0F12, 0x1A80},                
+{0x0F12, 0x0006},     //1S       
 
 //Set capture exposure time
 {0x002A, 0x0538}, 
-{0x0F12, 0xD000}, //D000 3415#lt_uCapMaxExp1			30ms
-{0x0F12, 0x0000}, 
-{0x0F12, 0xD000}, //D000 6590#lt_uCapMaxExp2      40ms
-{0x0F12, 0x0000}, 
+{0x0F12, 0x3415}, //D000 3415#lt_uCapMaxExp1			30ms
+{0x002A, 0x053C}, 
+{0x0F12, 0x682A}, //D000 6590#lt_uCapMaxExp2      40ms
+//{0x0F12, 0x0000}, 
 {0x002A, 0x1684}, 
-{0x0F12, 0xD000}, //D000 9AB0/#evt1_lt_uCapMaxExp3 40ms
-{0x0F12, 0x0000}, 
-{0x0F12, 0xD000}, //D000 13880#evt1_lt_uCapMaxExp4 40ms
-{0x0F12, 0x0000}, 
+{0x0F12, 0x8235}, //D000 9AB0/#evt1_lt_uCapMaxExp3 40ms
+{0x002A, 0x1688}, 
+{0x0F12, 0x1A80}, //D000 13880#evt1_lt_uCapMaxExp4 40ms
+{0x0F12, 0x0006}, 
 
 //Set gain
 {0x002A, 0x0540}, 
-{0x0F12, 0x0170}, //0170 0150	// #lt_uMaxAnGain1
-{0x0F12, 0x0280}, //0250 0280// #lt_uMaxAnGain2
+{0x0F12, 0x0180}, //0170 0150	// #lt_uMaxAnGain1
+{0x0F12, 0x0250}, //0250 0280// #lt_uMaxAnGain2
 {0x002A, 0x168C}, 
-{0x0F12, 0x0380}, //0380	02A0// #evt1_lt_uMaxAnGain3
+{0x0F12, 0x0340}, //0380	02A0// #evt1_lt_uMaxAnGain3
 {0x0F12, 0x0800}, //0800	0800// #evt1_lt_uMaxAnGain4
 {0x002A, 0x0544}, 
-{0x0F12, 0x0200}, //#lt_uMaxDigGain
-{0x0F12, 0x1000}, //#lt_uMaxTotGain
+//{0x0F12, 0x0200}, //#lt_uMaxDigGain
+//{0x0F12, 0x1000}, //#lt_uMaxTotGain
+{0x0F12, 0x0100}, //#lt_uMaxDigGain				// 0911 for noise
+{0x0F12, 0x0600}, //#lt_uMaxTotGain				// 0911 for noisse
 
 {0x002A, 0x1694}, 
 {0x0F12, 0x0001}, //#evt1_senHal_bExpandForbid
@@ -1952,43 +1957,11 @@ static struct s5k5cag_reg initial_list[] = {
 {0x0F12, 0x0111}, //#lt_uLimitHigh
 {0x0F12, 0x00F0}, //#lt_uLimitLow
 
-////================================================================================================
-////SET PREVIEW CONFIGURATION_0
-////# Foramt : YUV422
-////# Size: 640 X 480
-////# FPS : 30fps
-////================================================================================================
-//{0x002A, 0x026C},                                                                                                                    
-//{0x0F12, 0x0280},  //0320 //#REG_0TC_PCFG_usWidth//1024                                                                                      
-//{0x0F12, 0x01E0},  //0258 //#REG_0TC_PCFG_usHeight //768    026E                                                                             
-//{0x0F12, 0x0005},  //#REG_0TC_PCFG_Format            0270                                                                             
-//{0x0F12, 0x3AA8},  //#REG_0TC_PCFG_usMaxOut4KHzRate  0272                                                                               
-//{0x0F12, 0x3A88},  //#REG_0TC_PCFG_usMinOut4KHzRate  0274                                                                               
-//{0x0F12, 0x0100},  //#REG_0TC_PCFG_OutClkPerPix88    0276                                                                               
-//{0x0F12, 0x0800},  //#REG_0TC_PCFG_uMaxBpp88         027                                                                                
-//{0x0F12, 0x0052},  //0052 //#REG_0TC_PCFG_PVIMask //s0050 = FALSE in MSM6290 : s0052 = TRUE in MSM6800 //reg 027A                              
-//{0x0F12, 0x0050},  //#REG_0TC_PCFG_OIFMask                                                                                              
-//{0x0F12, 0x0600},  //#REG_0TC_PCFG_usJpegPacketSize                                                                                     
-//{0x0F12, 0x0400},  //#REG_0TC_PCFG_usJpegTotalPackets                                                                                   
-//{0x0F12, 0x0000},  //#REG_0TC_PCFG_uClockInd                                                                                            
-//{0x0F12, 0x0000},  //#REG_0TC_PCFG_usFrTimeType                                                                                         
-//{0x0F12, 0x0001},  //#REG_0TC_PCFG_FrRateQualityType                                                                                    
-//{0x0F12, 0x029A},  //03E8  //0580 //#REG_0TC_PCFG_usMaxFrTimeMsecMult10 //15fps                                                                                
-//{0x0F12, 0x029A},  //029A 15fps //01c6 //#REG_0TC_PCFG_usMinFrTimeMsecMult10 // 014D 30fps                                                                        
-//{0x0F12, 0x0000},  //#REG_0TC_PCFG_bSmearOutput                                                                                         
-//{0x0F12, 0x0000},  //#REG_0TC_PCFG_sSaturation                                                                                          
-//{0x0F12, 0x0000},  //#REG_0TC_PCFG_sSharpBlur                                                                                           
-//{0x0F12, 0x0000},  //#REG_0TC_PCFG_sColorTemp                                                              
-//{0x0F12, 0x0000},  //#REG_0TC_PCFG_uDeviceGammaIndex                                                       
-//{0x0F12, 0x0000},  //#REG_0TC_PCFG_uPrevMirror                                                             
-//{0x0F12, 0x0000},  //#REG_0TC_PCFG_uCaptureMirror                                                                                                                 
-//{0x0F12, 0x0000},  //#REG_0TC_PCFG_uRotation   
-
 //================================================================================================
 //SET PREVIEW CONFIGURATION_0
 //# Foramt : YUV422
 //# Size: 2048 X 1536
-//# FPS : 7.5
+//# FPS : 5 ~ 7.5
 //================================================================================================
 	{0x002A, 0x026C},
 	{0x0F12, 0x0800}, //#REG_0TC_PCFG_usWidth/
@@ -2005,7 +1978,7 @@ static struct s5k5cag_reg initial_list[] = {
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_uClockInd
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_usFrTimeType
 	{0x0F12, 0x0002}, //#REG_0TC_PCFG_FrRateQualityType
-	{0x0F12, 0x0534}, //03E8 //#REG_0TC_PCFG_usMaxFrTimeMsecMult10
+	{0x0F12, 0x07D0}, //03E8 //#REG_0TC_PCFG_usMaxFrTimeMsecMult10
 	{0x0F12, 0x0534}, //#REG_0TC_PCFG_usMinFrTimeMsecMult10
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_bSmearOutput
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_sSaturation
@@ -2016,43 +1989,11 @@ static struct s5k5cag_reg initial_list[] = {
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_uCaptureMirror
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_uRotation
 
-////================================================================================================
-////SET PREVIEW CONFIGURATION_1
-////# Foramt : YUV422
-////# Size: 720 X 576
-////# FPS : 30fps
-////================================================================================================
-//{0x002A, 0x029C}, 
-//{0x0F12, 0x02D0}, //#REG_0TC_PCFG_usWidth
-//{0x0F12, 0x0240}, //#REG_0TC_PCFG_usHeight		    026E
-//{0x0F12, 0x0005}, //#REG_0TC_PCFG_Format            0270
-//{0x0F12, 0x3AA8}, //#REG_0TC_PCFG_usMaxOut4KHzRate  0272
-//{0x0F12, 0x3A88}, //#REG_0TC_PCFG_usMinOut4KHzRate  0274
-//{0x0F12, 0x0100}, //#REG_0TC_PCFG_OutClkPerPix88    0276
-//{0x0F12, 0x0800}, //#REG_0TC_PCFG_uMaxBpp88         027
-//{0x0F12, 0x0052}, //#REG_0TC_PCFG_PVIMask //s0050 = FALSE in MSM6290 : s0052 = TRUE in MSM6800 //reg 027A
-//{0x0F12, 0x027E}, //#REG_0TC_PCFG_OIFMask
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_usJpegPacketSize
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_usJpegTotalPackets
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_uClockInd
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_usFrTimeType
-//{0x0F12, 0x0001}, //#REG_0TC_PCFG_FrRateQualityType
-//{0x0F12, 0x014D}, //03E8 //#REG_0TC_PCFG_usMaxFrTimeMsecMult10
-//{0x0F12, 0x014D}, //#REG_0TC_PCFG_usMinFrTimeMsecMult10
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_bSmearOutput
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_sSaturation
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_sSharpBlur
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_sColorTemp
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_uDeviceGammaIndex
-//{0x0F12, 0x0003}, //#REG_0TC_PCFG_uPrevMirror
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_uCaptureMirror
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_uRotation
-
 //================================================================================================
 //SET PREVIEW CONFIGURATION_1
 //# Foramt : YUV422
 //# Size: 1920 X 1080
-//# FPS : 7.5 ~ 15fps
+//# FPS : 10 ~ 15fps
 //================================================================================================
 	{0x002A, 0x029C},
 	{0x0F12, 0x0780}, //#REG_0TC_PCFG_usWidth
@@ -2069,7 +2010,7 @@ static struct s5k5cag_reg initial_list[] = {
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_uClockInd
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_usFrTimeType
 	{0x0F12, 0x0002}, //#REG_0TC_PCFG_FrRateQualityType
-	{0x0F12, 0x0534}, //03E8 //#REG_0TC_PCFG_usMaxFrTimeMsecMult10
+	{0x0F12, 0x03E8}, //03E8 //#REG_0TC_PCFG_usMaxFrTimeMsecMult10
 	{0x0F12, 0x029A}, //#REG_0TC_PCFG_usMinFrTimeMsecMult10
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_bSmearOutput
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_sSaturation
@@ -2080,44 +2021,11 @@ static struct s5k5cag_reg initial_list[] = {
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_uCaptureMirror
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_uRotation
 
-//param_start SET PREVIEW CONFIGURATION_2
-////================================================================================================
-////SET PREVIEW CONFIGURATION_2
-////# Foramt : YUV422
-////# Size: 768 X 576
-////# FPS : 30fps
-////================================================================================================
-//{0x002A, 0x02CC}, 
-//{0x0F12, 0x0300}, //#REG_0TC_PCFG_usWidth
-//{0x0F12, 0x0240}, //#REG_0TC_PCFG_usHeight		    026E
-//{0x0F12, 0x0005}, //#REG_0TC_PCFG_Format            0270
-//{0x0F12, 0x3AA8}, //#REG_0TC_PCFG_usMaxOut4KHzRate  0272
-//{0x0F12, 0x3A88}, //#REG_0TC_PCFG_usMinOut4KHzRate  0274
-//{0x0F12, 0x0100}, //#REG_0TC_PCFG_OutClkPerPix88    0276
-//{0x0F12, 0x0800}, //#REG_0TC_PCFG_uMaxBpp88         027
-//{0x0F12, 0x0052}, //#REG_0TC_PCFG_PVIMask //s0050 = FALSE in MSM6290 : s0052 = TRUE in MSM6800 //reg 027A
-//{0x0F12, 0x027E}, //#REG_0TC_PCFG_OIFMask
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_usJpegPacketSize
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_usJpegTotalPackets
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_uClockInd
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_usFrTimeType
-//{0x0F12, 0x0001}, //#REG_0TC_PCFG_FrRateQualityType
-//{0x0F12, 0x014D}, //03E8 //#REG_0TC_PCFG_usMaxFrTimeMsecMult10
-//{0x0F12, 0x014D}, //#REG_0TC_PCFG_usMinFrTimeMsecMult10
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_bSmearOutput
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_sSaturation
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_sSharpBlur
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_sColorTemp
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_uDeviceGammaIndex
-//{0x0F12, 0x0003}, //#REG_0TC_PCFG_uPrevMirror
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_uCaptureMirror
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_uRotation
-
 //================================================================================================
 //SET PREVIEW CONFIGURATION_2
 //# Foramt : YUV422
 //# Size: 1280 X 720
-//# FPS : 7.5 ~ 30fps
+//# FPS : 10 ~ 30fps
 //================================================================================================
 	{0x002A, 0x02CC},
 	{0x0F12, 0x0500}, //#REG_0TC_PCFG_usWidth
@@ -2134,7 +2042,7 @@ static struct s5k5cag_reg initial_list[] = {
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_uClockInd
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_usFrTimeType
 	{0x0F12, 0x0002}, //#REG_0TC_PCFG_FrRateQualityType
-	{0x0F12, 0x0534}, //03E8 //#REG_0TC_PCFG_usMaxFrTimeMsecMult10
+	{0x0F12, 0x03E8}, //03E8 //#REG_0TC_PCFG_usMaxFrTimeMsecMult10
 	{0x0F12, 0x014D}, //#REG_0TC_PCFG_usMinFrTimeMsecMult10
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_bSmearOutput
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_sSaturation
@@ -2145,44 +2053,11 @@ static struct s5k5cag_reg initial_list[] = {
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_uCaptureMirror
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_uRotation
 
-//param_start SET PREVIEW CONFIGURATION_3
-////================================================================================================
-////SET PREVIEW CONFIGURATION_3
-////# Foramt : YUV422
-////# Size: 800 X 600
-////# FPS : 15fps
-////================================================================================================
-//{0x002A, 0x02FC}, 
-//{0x0F12, 0x0320}, //#REG_0TC_PCFG_usWidth
-//{0x0F12, 0x0258}, //#REG_0TC_PCFG_usHeight		    026E
-//{0x0F12, 0x0005}, //#REG_0TC_PCFG_Format            0270
-//{0x0F12, 0x3AA8}, //#REG_0TC_PCFG_usMaxOut4KHzRate  0272
-//{0x0F12, 0x3A88}, //#REG_0TC_PCFG_usMinOut4KHzRate  0274
-//{0x0F12, 0x0100}, //#REG_0TC_PCFG_OutClkPerPix88    0276
-//{0x0F12, 0x0800}, //#REG_0TC_PCFG_uMaxBpp88         027
-//{0x0F12, 0x0052}, //#REG_0TC_PCFG_PVIMask //s0050 = FALSE in MSM6290 : s0052 = TRUE in MSM6800 //reg 027A
-//{0x0F12, 0x027E}, //#REG_0TC_PCFG_OIFMask
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_usJpegPacketSize
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_usJpegTotalPackets
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_uClockInd
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_usFrTimeType
-//{0x0F12, 0x0001}, //#REG_0TC_PCFG_FrRateQualityType
-//{0x0F12, 0x014D}, //03E8 //#REG_0TC_PCFG_usMaxFrTimeMsecMult10
-//{0x0F12, 0x014D}, //#REG_0TC_PCFG_usMinFrTimeMsecMult10
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_bSmearOutput
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_sSaturation
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_sSharpBlur
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_sColorTemp
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_uDeviceGammaIndex
-//{0x0F12, 0x0003}, //#REG_0TC_PCFG_uPrevMirror
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_uCaptureMirror
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_uRotation
-
 //================================================================================================
 //SET PREVIEW CONFIGURATION_3
 //# Foramt : YUV422
 //# Size: 704 X 576
-//# FPS : 30fps
+//# FPS : 10 ~ 30fps
 //================================================================================================
 	{0x002A, 0x02FC},
 	{0x0F12, 0x02C0}, //#REG_0TC_PCFG_usWidth
@@ -2199,7 +2074,7 @@ static struct s5k5cag_reg initial_list[] = {
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_uClockInd
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_usFrTimeType
 	{0x0F12, 0x0001}, //#REG_0TC_PCFG_FrRateQualityType
-	{0x0F12, 0x014D}, //03E8 //#REG_0TC_PCFG_usMaxFrTimeMsecMult10
+	{0x0F12, 0x03E8}, //03E8 //#REG_0TC_PCFG_usMaxFrTimeMsecMult10
 	{0x0F12, 0x014D}, //#REG_0TC_PCFG_usMinFrTimeMsecMult10
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_bSmearOutput
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_sSaturation
@@ -2210,44 +2085,11 @@ static struct s5k5cag_reg initial_list[] = {
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_uCaptureMirror
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_uRotation
 
-//param_start SET PREVIEW CONFIGURATION_4
-////================================================================================================
-////SET PREVIEW CONFIGURATION_4
-////# Foramt : YUV422
-////# Size: 992 X 560
-////# FPS : 15fps
-////================================================================================================
-//{0x002A, 0x032C}, 
-//{0x0F12, 0x03E0}, //#REG_0TC_PCFG_usWidth
-//{0x0F12, 0x0230}, //#REG_0TC_PCFG_usHeight		    026E
-//{0x0F12, 0x0005}, //#REG_0TC_PCFG_Format            0270
-//{0x0F12, 0x3AA8}, //#REG_0TC_PCFG_usMaxOut4KHzRate  0272
-//{0x0F12, 0x3A88}, //#REG_0TC_PCFG_usMinOut4KHzRate  0274
-//{0x0F12, 0x0100}, //#REG_0TC_PCFG_OutClkPerPix88    0276
-//{0x0F12, 0x0800}, //#REG_0TC_PCFG_uMaxBpp88         027
-//{0x0F12, 0x0052}, //#REG_0TC_PCFG_PVIMask //s0050 = FALSE in MSM6290 : s0052 = TRUE in MSM6800 //reg 027A
-//{0x0F12, 0x027E}, //#REG_0TC_PCFG_OIFMask
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_usJpegPacketSize
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_usJpegTotalPackets
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_uClockInd
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_usFrTimeType
-//{0x0F12, 0x0001}, //#REG_0TC_PCFG_FrRateQualityType
-//{0x0F12, 0x014D}, //03E8 //#REG_0TC_PCFG_usMaxFrTimeMsecMult10
-//{0x0F12, 0x014D}, //#REG_0TC_PCFG_usMinFrTimeMsecMult10
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_bSmearOutput
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_sSaturation
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_sSharpBlur
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_sColorTemp
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_uDeviceGammaIndex
-//{0x0F12, 0x0003}, //#REG_0TC_PCFG_uPrevMirror
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_uCaptureMirror
-//{0x0F12, 0x0000}, //#REG_0TC_PCFG_uRotation
-
 //================================================================================================
 //SET PREVIEW CONFIGURATION_4
 //# Foramt : YUV422
 //# Size: 640 X 480
-//# FPS : 30fps
+//# FPS : 10 ~ 30fps
 //================================================================================================
 	{0x002A, 0x032C},
 	{0x0F12, 0x0280}, //#REG_0TC_PCFG_usWidth
@@ -2264,7 +2106,7 @@ static struct s5k5cag_reg initial_list[] = {
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_uClockInd
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_usFrTimeType
 	{0x0F12, 0x0001}, //#REG_0TC_PCFG_FrRateQualityType
-	{0x0F12, 0x014D}, //03E8 //#REG_0TC_PCFG_usMaxFrTimeMsecMult10
+	{0x0F12, 0x03E8}, //03E8 //#REG_0TC_PCFG_usMaxFrTimeMsecMult10
 	{0x0F12, 0x014D}, //#REG_0TC_PCFG_usMinFrTimeMsecMult10
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_bSmearOutput
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_sSaturation
@@ -2273,44 +2115,15 @@ static struct s5k5cag_reg initial_list[] = {
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_uDeviceGammaIndex
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_uPrevMirror
 	{0x0F12, 0x0000}, //#REG_0TC_PCFG_uCaptureMirror
-	{0x0F12, 0x0000}, //#REG_0TC_PCFG_uRotation
+	{0x0F12, 0x0000}, //#REG_0TC_PCFG_uRotation	
 	
-////================================================================================================
-////SET CAPTURE CONFIGURATION_0
-////# Foramt :JPEG
-////# Size: 1920 X 1080
-////# FPS : 7.5 ~ 15fps
-////================================================================================================
-//{0x002A, 0x035C}, 
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_uCaptureModeJpEG
-//{0x0F12, 0x0780}, //#REG_0TC_CCFG_usWidth
-//{0x0F12, 0x0438}, //#REG_0TC_CCFG_usHeight
-//{0x0F12, 0x0005}, //#REG_0TC_CCFG_Format//5:YUV9:JPEG
-//{0x0F12, 0x3AA8}, //#REG_0TC_CCFG_usMaxOut4KHzRate
-//{0x0F12, 0x3A88}, //#REG_0TC_CCFG_usMinOut4KHzRate
-//{0x0F12, 0x0100}, //#REG_0TC_CCFG_OutClkPerPix88
-//{0x0F12, 0x0800}, //#REG_0TC_CCFG_uMaxBpp88
-//{0x0F12, 0x0052}, //#REG_0TC_CCFG_PVIMask
-//{0x0F12, 0x0050}, //#REG_0TC_CCFG_OIFMask   edison
-//{0x0F12, 0x0600}, //#REG_0TC_CCFG_usJpegPacketSize
-//{0x0F12, 0x0400}, //#REG_0TC_CCFG_usJpegTotalPackets
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_uClockInd
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_usFrTimeType
-//{0x0F12, 0x0002}, //#REG_0TC_CCFG_FrRateQualityType
-//{0x0F12, 0x0534}, //#REG_0TC_CCFG_usMaxFrTimeMsecMult10 //7.5fps
-//{0x0F12, 0x029A}, //#REG_0TC_CCFG_usMinFrTimeMsecMult10 //15fps
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_bSmearOutput
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_sSaturation
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_sSharpBlur
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_sColorTemp
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_uDeviceGammaIndex
 //
 //param_start SET CAPTURE CONFIGURATION_0
 //================================================================================================
 //SET CAPTURE CONFIGURATION_0
 //# Foramt :YUV422
 //# Size: 2048 X 1536
-//# FPS : 7.5
+//# FPS : 5 ~ 7.5
 //================================================================================================
 {0x002A, 0x035C}, 
 {0x0F12, 0x0000}, //#REG_0TC_CCFG_uCaptureModeJpEG
@@ -2328,7 +2141,7 @@ static struct s5k5cag_reg initial_list[] = {
 {0x0F12, 0x0000}, //#REG_0TC_CCFG_uClockInd
 {0x0F12, 0x0000}, //#REG_0TC_CCFG_usFrTimeType
 {0x0F12, 0x0002}, //#REG_0TC_CCFG_FrRateQualityType
-{0x0F12, 0x0534}, //#REG_0TC_CCFG_usMaxFrTimeMsecMult10 //7.5fps
+{0x0F12, 0x07D0}, //#REG_0TC_CCFG_usMaxFrTimeMsecMult10 //7.5fps
 {0x0F12, 0x0534}, //#REG_0TC_CCFG_usMinFrTimeMsecMult10 //15fps
 {0x0F12, 0x0000}, //#REG_0TC_CCFG_bSmearOutput
 {0x0F12, 0x0000}, //#REG_0TC_CCFG_sSaturation
@@ -2336,42 +2149,11 @@ static struct s5k5cag_reg initial_list[] = {
 {0x0F12, 0x0000}, //#REG_0TC_CCFG_sColorTemp
 {0x0F12, 0x0000}, //#REG_0TC_CCFG_uDeviceGammaIndex
 
-////param_start SET CAPTURE CONFIGURATION_1
-////================================================================================================
-////SET CAPTURE CONFIGURATION_1
-////# Foramt :JPEG
-////# Size: 1280 X 720
-////# FPS : 7.5 ~ 15fps
-////================================================================================================
-//{0x002A, 0x0388}, 
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_uCaptureModeJpEG
-//{0x0F12, 0x0500}, //#REG_0TC_CCFG_usWidth
-//{0x0F12, 0x02D0}, //#REG_0TC_CCFG_usHeight
-//{0x0F12, 0x0005}, //#REG_0TC_CCFG_Format//5:YUV9:JPEG
-//{0x0F12, 0x3AA8}, //#REG_0TC_CCFG_usMaxOut4KHzRate
-//{0x0F12, 0x3A88}, //#REG_0TC_CCFG_usMinOut4KHzRate
-//{0x0F12, 0x0100}, //#REG_0TC_CCFG_OutClkPerPix88
-//{0x0F12, 0x0800}, //#REG_0TC_CCFG_uMaxBpp88
-//{0x0F12, 0x0052}, //#REG_0TC_CCFG_PVIMask
-//{0x0F12, 0x0050}, //#REG_0TC_CCFG_OIFMask   edison
-//{0x0F12, 0x0600}, //#REG_0TC_CCFG_usJpegPacketSize
-//{0x0F12, 0x0400}, //#REG_0TC_CCFG_usJpegTotalPackets
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_uClockInd
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_usFrTimeType
-//{0x0F12, 0x0002}, //#REG_0TC_CCFG_FrRateQualityType
-//{0x0F12, 0x0535}, //#REG_0TC_CCFG_usMaxFrTimeMsecMult10 //7.5fps
-//{0x0F12, 0x029A}, //#REG_0TC_CCFG_usMinFrTimeMsecMult10 //15fps
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_bSmearOutput
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_sSaturation
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_sSharpBlur
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_sColorTemp
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_uDeviceGammaIndex
-
 //================================================================================================
 //SET CAPTURE CONFIGURATION_1
 //# Foramt :YUV422
 //# Size: 1920 X 1080
-//# FPS : 7.5 ~ 15fps
+//# FPS : 5 ~ 15fps
 //================================================================================================
 {0x002A, 0x0388}, 
 {0x0F12, 0x0000}, //#REG_0TC_CCFG_uCaptureModeJpEG
@@ -2389,7 +2171,7 @@ static struct s5k5cag_reg initial_list[] = {
 {0x0F12, 0x0000}, //#REG_0TC_CCFG_uClockInd
 {0x0F12, 0x0000}, //#REG_0TC_CCFG_usFrTimeType
 {0x0F12, 0x0002}, //#REG_0TC_CCFG_FrRateQualityType
-{0x0F12, 0x0534}, //#REG_0TC_CCFG_usMaxFrTimeMsecMult10 //7.5fps
+{0x0F12, 0x07D0}, //#REG_0TC_CCFG_usMaxFrTimeMsecMult10 //7.5fps
 {0x0F12, 0x029A}, //#REG_0TC_CCFG_usMinFrTimeMsecMult10 //15fps
 {0x0F12, 0x0000}, //#REG_0TC_CCFG_bSmearOutput
 {0x0F12, 0x0000}, //#REG_0TC_CCFG_sSaturation
@@ -2397,37 +2179,6 @@ static struct s5k5cag_reg initial_list[] = {
 {0x0F12, 0x0000}, //#REG_0TC_CCFG_sColorTemp
 {0x0F12, 0x0000}, //#REG_0TC_CCFG_uDeviceGammaIndex
 
-
-////param_start SET CAPTURE CONFIGURATION_2
-////================================================================================================
-////SET CAPTURE CONFIGURATION_2
-////# Foramt :JPEG
-////# Size: 1280 X 1024
-////# FPS : 7.5 ~ 15fps
-////================================================================================================
-//{0x002A, 0x03B4}, 
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_uCaptureModeJpEG
-//{0x0F12, 0x0500}, //#REG_0TC_CCFG_usWidth
-//{0x0F12, 0x0400}, //#REG_0TC_CCFG_usHeight
-//{0x0F12, 0x0005}, //#REG_0TC_CCFG_Format//5:YUV9:JPEG
-//{0x0F12, 0x3AA8}, //#REG_0TC_CCFG_usMaxOut4KHzRate
-//{0x0F12, 0x3A88}, //#REG_0TC_CCFG_usMinOut4KHzRate
-//{0x0F12, 0x0100}, //#REG_0TC_CCFG_OutClkPerPix88
-//{0x0F12, 0x0800}, //#REG_0TC_CCFG_uMaxBpp88
-//{0x0F12, 0x0052}, //#REG_0TC_CCFG_PVIMask
-//{0x0F12, 0x0050}, //#REG_0TC_CCFG_OIFMask   edison
-//{0x0F12, 0x0600}, //#REG_0TC_CCFG_usJpegPacketSize
-//{0x0F12, 0x0400}, //#REG_0TC_CCFG_usJpegTotalPackets
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_uClockInd
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_usFrTimeType
-//{0x0F12, 0x0002}, //#REG_0TC_CCFG_FrRateQualityType
-//{0x0F12, 0x0535}, //#REG_0TC_CCFG_usMaxFrTimeMsecMult10 //7.5fps
-//{0x0F12, 0x029A}, //#REG_0TC_CCFG_usMinFrTimeMsecMult10 //15fps
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_bSmearOutput
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_sSaturation
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_sSharpBlur
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_sColorTemp
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_uDeviceGammaIndex
 
 //================================================================================================
 //SET CAPTURE CONFIGURATION_2
@@ -2451,7 +2202,7 @@ static struct s5k5cag_reg initial_list[] = {
 	{0x0F12, 0x0000}, //#REG_0TC_CCFG_uClockInd
 	{0x0F12, 0x0000}, //#REG_0TC_CCFG_usFrTimeType
 	{0x0F12, 0x0002}, //#REG_0TC_CCFG_FrRateQualityType
-	{0x0F12, 0x0534}, //#REG_0TC_CCFG_usMaxFrTimeMsecMult10 //7.5fps
+	{0x0F12, 0x07D0}, //#REG_0TC_CCFG_usMaxFrTimeMsecMult10 //7.5fps
 	{0x0F12, 0x014D}, //#REG_0TC_CCFG_usMinFrTimeMsecMult10 //15fps
 	{0x0F12, 0x0000}, //#REG_0TC_CCFG_bSmearOutput
 	{0x0F12, 0x0000}, //#REG_0TC_CCFG_sSaturation
@@ -2459,42 +2210,12 @@ static struct s5k5cag_reg initial_list[] = {
 	{0x0F12, 0x0000}, //#REG_0TC_CCFG_sColorTemp
 	{0x0F12, 0x0000}, //#REG_0TC_CCFG_uDeviceGammaIndex
 
-//param_start SET CAPTURE CONFIGURATION_3
-////================================================================================================
-////SET CAPTURE CONFIGURATION_3
-////# Foramt :JPEG
-////# Size: 1600 X 1200
-////# FPS : 7.5 ~ 15fps
-////================================================================================================
-//{0x002A, 0x03E0}, 
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_uCaptureModeJpEG
-//{0x0F12, 0x0640}, //#REG_0TC_CCFG_usWidth
-//{0x0F12, 0x04B0}, //#REG_0TC_CCFG_usHeight
-//{0x0F12, 0x0005}, //#REG_0TC_CCFG_Format//5:YUV9:JPEG
-//{0x0F12, 0x3AA8}, //#REG_0TC_CCFG_usMaxOut4KHzRate
-//{0x0F12, 0x3A88}, //#REG_0TC_CCFG_usMinOut4KHzRate
-//{0x0F12, 0x0100}, //#REG_0TC_CCFG_OutClkPerPix88
-//{0x0F12, 0x0800}, //#REG_0TC_CCFG_uMaxBpp88
-//{0x0F12, 0x0052}, //#REG_0TC_CCFG_PVIMask
-//{0x0F12, 0x0050}, //#REG_0TC_CCFG_OIFMask   edison
-//{0x0F12, 0x0600}, //#REG_0TC_CCFG_usJpegPacketSize
-//{0x0F12, 0x0400}, //#REG_0TC_CCFG_usJpegTotalPackets
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_uClockInd
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_usFrTimeType
-//{0x0F12, 0x0002}, //#REG_0TC_CCFG_FrRateQualityType
-//{0x0F12, 0x0535}, //#REG_0TC_CCFG_usMaxFrTimeMsecMult10 //7.5fps
-//{0x0F12, 0x029A}, //#REG_0TC_CCFG_usMinFrTimeMsecMult10 //15fps
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_bSmearOutput
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_sSaturation
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_sSharpBlur
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_sColorTemp
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_uDeviceGammaIndex
 
 //================================================================================================
 //SET CAPTURE CONFIGURATION_3
 //# Foramt :YUV422
 //# Size: 704 X 576
-//# FPS : 30fps
+//# FPS : 5 ~ 30fps
 //================================================================================================
 	{0x002A, 0x03E0},
 	{0x0F12, 0x0000}, //#REG_0TC_CCFG_uCaptureModeJpEG
@@ -2512,7 +2233,7 @@ static struct s5k5cag_reg initial_list[] = {
 	{0x0F12, 0x0000}, //#REG_0TC_CCFG_uClockInd
 	{0x0F12, 0x0000}, //#REG_0TC_CCFG_usFrTimeType
 	{0x0F12, 0x0001}, //#REG_0TC_CCFG_FrRateQualityType
-	{0x0F12, 0x014D}, //#REG_0TC_CCFG_usMaxFrTimeMsecMult10 //7.5fps
+	{0x0F12, 0x07D0}, //#REG_0TC_CCFG_usMaxFrTimeMsecMult10 //7.5fps
 	{0x0F12, 0x014D}, //#REG_0TC_CCFG_usMinFrTimeMsecMult10 //15fps
 	{0x0F12, 0x0000}, //#REG_0TC_CCFG_bSmearOutput
 	{0x0F12, 0x0000}, //#REG_0TC_CCFG_sSaturation
@@ -2520,42 +2241,11 @@ static struct s5k5cag_reg initial_list[] = {
 	{0x0F12, 0x0000}, //#REG_0TC_CCFG_sColorTemp
 	{0x0F12, 0x0000}, //#REG_0TC_CCFG_uDeviceGammaIndex
 
-//param_start SET CAPTURE CONFIGURATION_4
-////================================================================================================
-////SET CAPTURE CONFIGURATION_4
-////# Foramt :JPEG
-////# Size: 2048 X 1536
-////# FPS : 7.5 ~ 15fps
-////================================================================================================
-//{0x002A, 0x040C}, 
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_uCaptureModeJpEG
-//{0x0F12, 0x0800}, //#REG_0TC_CCFG_usWidth
-//{0x0F12, 0x0600}, //#REG_0TC_CCFG_usHeight
-//{0x0F12, 0x0005}, //#REG_0TC_CCFG_Format//5:YUV9:JPEG
-//{0x0F12, 0x3AA8}, //#REG_0TC_CCFG_usMaxOut4KHzRate
-//{0x0F12, 0x3A88}, //#REG_0TC_CCFG_usMinOut4KHzRate
-//{0x0F12, 0x0100}, //#REG_0TC_CCFG_OutClkPerPix88
-//{0x0F12, 0x0800}, //#REG_0TC_CCFG_uMaxBpp88
-//{0x0F12, 0x0052}, //#REG_0TC_CCFG_PVIMask
-//{0x0F12, 0x0050}, //#REG_0TC_CCFG_OIFMask   edison
-//{0x0F12, 0x0600}, //#REG_0TC_CCFG_usJpegPacketSize
-//{0x0F12, 0x0400}, //#REG_0TC_CCFG_usJpegTotalPackets
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_uClockInd
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_usFrTimeType
-//{0x0F12, 0x0002}, //#REG_0TC_CCFG_FrRateQualityType
-//{0x0F12, 0x0535}, //#REG_0TC_CCFG_usMaxFrTimeMsecMult10 //7.5fps
-//{0x0F12, 0x029A}, //#REG_0TC_CCFG_usMinFrTimeMsecMult10 //15fps
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_bSmearOutput
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_sSaturation
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_sSharpBlur
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_sColorTemp
-//{0x0F12, 0x0000}, //#REG_0TC_CCFG_uDeviceGammaIndex
-
 //================================================================================================
 //SET CAPTURE CONFIGURATION_4
 //# Foramt :YUV422
 //# Size: 640 X 480
-//# FPS : 30fps
+//# FPS : 5 ~ 30fps
 //================================================================================================
 	{0x002A, 0x040C},
 	{0x0F12, 0x0000}, //#REG_0TC_CCFG_uCaptureModeJpEG
@@ -2573,7 +2263,7 @@ static struct s5k5cag_reg initial_list[] = {
 	{0x0F12, 0x0000}, //#REG_0TC_CCFG_uClockInd
 	{0x0F12, 0x0000}, //#REG_0TC_CCFG_usFrTimeType
 	{0x0F12, 0x0001}, //#REG_0TC_CCFG_FrRateQualityType
-	{0x0F12, 0x014D}, //#REG_0TC_CCFG_usMaxFrTimeMsecMult10 //7.5fps
+	{0x0F12, 0x07D0}, //#REG_0TC_CCFG_usMaxFrTimeMsecMult10 //7.5fps
 	{0x0F12, 0x014D}, //#REG_0TC_CCFG_usMinFrTimeMsecMult10 //15fps
 	{0x0F12, 0x0000}, //#REG_0TC_CCFG_bSmearOutput
 	{0x0F12, 0x0000}, //#REG_0TC_CCFG_sSaturation
@@ -3366,60 +3056,60 @@ static struct s5k5cag_reg initial_list[] = {
 {0x0F12, 0xFE50},   //#TVAR_wbt_pBaseCcms                            
 {0x0F12, 0x018D},   //#TVAR_wbt_pBaseCcms                            
 {0x0F12, 0x0172},   //#TVAR_wbt_pBaseCcms                            
-{0x0F12, 0x021F},   //#TVAR_wbt_pBaseCcms[18] // Inca                
-{0x0F12, 0xFF1B},   //#TVAR_wbt_pBaseCcms[19]                        
-{0x0F12, 0xFF43},   //#TVAR_wbt_pBaseCcms[20]                        
-{0x0F12, 0xFE9F},   //#TVAR_wbt_pBaseCcms[21]                        
-{0x0F12, 0x025C},   //#TVAR_wbt_pBaseCcms[22]                        
-{0x0F12, 0xFECF},   //#TVAR_wbt_pBaseCcms[23]                        
-{0x0F12, 0xFF9B},   //#TVAR_wbt_pBaseCcms[24]                        
-{0x0F12, 0xFF73},   //#TVAR_wbt_pBaseCcms[25]                        
-{0x0F12, 0x0202},   //#TVAR_wbt_pBaseCcms[26]                        
-{0x0F12, 0x0100},   //#TVAR_wbt_pBaseCcms[27]                        
-{0x0F12, 0x014C},   //#TVAR_wbt_pBaseCcms[28]                        
-{0x0F12, 0xFE6B},   //#TVAR_wbt_pBaseCcms[29]                        
-{0x0F12, 0x020D},   //#TVAR_wbt_pBaseCcms[30]                        
-{0x0F12, 0xFEA6},   //#TVAR_wbt_pBaseCcms[31]                        
-{0x0F12, 0x01FE},   //#TVAR_wbt_pBaseCcms[32]                        
-{0x0F12, 0xFE50},   //#TVAR_wbt_pBaseCcms[33]                        
-{0x0F12, 0x018D},   //#TVAR_wbt_pBaseCcms[34]                        
-{0x0F12, 0x0172},   //#TVAR_wbt_pBaseCcms[35]                        
-{0x0F12, 0x0222},   //#TVAR_wbt_pBaseCcms[36] // WW                  
-{0x0F12, 0xFF5B},   //#TVAR_wbt_pBaseCcms[37]                        
-{0x0F12, 0xFF8C},   //#TVAR_wbt_pBaseCcms[38]                        
-{0x0F12, 0xFEF0},   //#TVAR_wbt_pBaseCcms[39]                        
-{0x0F12, 0x024B},   //#TVAR_wbt_pBaseCcms[40]                        
-{0x0F12, 0xFF10},   //#TVAR_wbt_pBaseCcms[41]                        
-{0x0F12, 0xFFD2},   //#TVAR_wbt_pBaseCcms[42]                        
-{0x0F12, 0xFFB7},   //#TVAR_wbt_pBaseCcms[43]                        
-{0x0F12, 0x01FD},   //#TVAR_wbt_pBaseCcms[44]                        
-{0x0F12, 0x0108},   //#TVAR_wbt_pBaseCcms[45]                        
-{0x0F12, 0x015C},   //#TVAR_wbt_pBaseCcms[46]                        
-{0x0F12, 0xFED1},   //#TVAR_wbt_pBaseCcms[47]                        
-{0x0F12, 0x0222},   //#TVAR_wbt_pBaseCcms[48]                        
-{0x0F12, 0xFF03},   //#TVAR_wbt_pBaseCcms[49]                        
-{0x0F12, 0x0226},   //#TVAR_wbt_pBaseCcms[50]                        
-{0x0F12, 0xFECC},   //#TVAR_wbt_pBaseCcms[51]                        
-{0x0F12, 0x0198},   //#TVAR_wbt_pBaseCcms[52]                        
-{0x0F12, 0x0171},   //#TVAR_wbt_pBaseCcms[53]                        
-{0x0F12, 0x0206},   //#TVAR_wbt_pBaseCcms[54] // CWF                 
-{0x0F12, 0xFF64},   //#TVAR_wbt_pBaseCcms[55]                        
-{0x0F12, 0xFF7C},   //#TVAR_wbt_pBaseCcms[56]                        
-{0x0F12, 0xFED4},   //#TVAR_wbt_pBaseCcms[57]                        
-{0x0F12, 0x023A},   //#TVAR_wbt_pBaseCcms[58]                        
-{0x0F12, 0xFF10},   //#TVAR_wbt_pBaseCcms[59]                        
-{0x0F12, 0xFFD0},   //#TVAR_wbt_pBaseCcms[60]                        
-{0x0F12, 0xFFA6},   //#TVAR_wbt_pBaseCcms[61]                        
-{0x0F12, 0x01E4},   //#TVAR_wbt_pBaseCcms[62]                        
-{0x0F12, 0x00F0},   //#TVAR_wbt_pBaseCcms[63]                        
-{0x0F12, 0x015B},   //#TVAR_wbt_pBaseCcms[64]                        
-{0x0F12, 0xFECE},   //#TVAR_wbt_pBaseCcms[65]                        
-{0x0F12, 0x0225},   //#TVAR_wbt_pBaseCcms[66]                        
-{0x0F12, 0xFF01},   //#TVAR_wbt_pBaseCcms[67]                        
-{0x0F12, 0x0215},   //#TVAR_wbt_pBaseCcms[68]                        
-{0x0F12, 0xFEC3},   //#TVAR_wbt_pBaseCcms[69]                        
-{0x0F12, 0x017C},   //#TVAR_wbt_pBaseCcms[70]                        
-{0x0F12, 0x0167},   //#TVAR_wbt_pBaseCcms[71]                        
+{0x0F12, 0x02BD},   //#TVAR_wbt_pBaseCcms[18] // Inca                
+{0x0F12, 0xFF1D},   //#TVAR_wbt_pBaseCcms[19]                        
+{0x0F12, 0xFF4D},   //#TVAR_wbt_pBaseCcms[20]                        
+{0x0F12, 0xFE8A},   //#TVAR_wbt_pBaseCcms[21]                        
+{0x0F12, 0x0311},   //#TVAR_wbt_pBaseCcms[22]                        
+{0x0F12, 0xFECA},   //#TVAR_wbt_pBaseCcms[23]                        
+{0x0F12, 0xFFA7},   //#TVAR_wbt_pBaseCcms[24]                        
+{0x0F12, 0xFF79},   //#TVAR_wbt_pBaseCcms[25]                        
+{0x0F12, 0x0280},   //#TVAR_wbt_pBaseCcms[26]                        
+{0x0F12, 0x013F},   //#TVAR_wbt_pBaseCcms[27]                        
+{0x0F12, 0x01C0},   //#TVAR_wbt_pBaseCcms[28]                        
+{0x0F12, 0xFE56},   //#TVAR_wbt_pBaseCcms[29]                        
+{0x0F12, 0x028F},   //#TVAR_wbt_pBaseCcms[30]                        
+{0x0F12, 0xFE5D},   //#TVAR_wbt_pBaseCcms[31]                        
+{0x0F12, 0x0284},   //#TVAR_wbt_pBaseCcms[32]                        
+{0x0F12, 0xFE3C},   //#TVAR_wbt_pBaseCcms[33]                        
+{0x0F12, 0x01ED},   //#TVAR_wbt_pBaseCcms[34]                        
+{0x0F12, 0x01C6},   //#TVAR_wbt_pBaseCcms[35]                        
+{0x0F12, 0x01CC},	//01CC//01E3 //0222       //#TVAR_wbt_pBaseCcms[36] // WW                  //jj
+{0x0F12, 0xFF7E},	//FF7E//FF84 //FF5B       //#TVAR_wbt_pBaseCcms[37]                        
+{0x0F12, 0xFFB6},	//FFB6//FF96 //FF8C       //#TVAR_wbt_pBaseCcms[38]                        
+{0x0F12, 0xFEED},	//FEED//FEFA //FEF0       //#TVAR_wbt_pBaseCcms[39]                        
+{0x0F12, 0x0225},	//0225//0207 //024B       //#TVAR_wbt_pBaseCcms[40]                        
+{0x0F12, 0xFF29},	//FF29//FF36 //FF10       //#TVAR_wbt_pBaseCcms[41]                        
+{0x0F12, 0xFFE3},	//FFE3//FFEB //FFD2       //#TVAR_wbt_pBaseCcms[42]                        
+{0x0F12, 0xFFB8},	//FFB8//FFC1 //FFB7       //#TVAR_wbt_pBaseCcms[43]                        
+{0x0F12, 0x01DB},	//01DB//01C7 //01FD       //#TVAR_wbt_pBaseCcms[44]                        
+{0x0F12, 0x010B},	//010B//00E6 //0108       //#TVAR_wbt_pBaseCcms[45]                        
+{0x0F12, 0x0186},	//0186//0149 //015C       //#TVAR_wbt_pBaseCcms[46]                        
+{0x0F12, 0xFE9F},	//FE9F//FEFE //FED1       //#TVAR_wbt_pBaseCcms[47]                        
+{0x0F12, 0x0220},	//0220//0212 //0222       //#TVAR_wbt_pBaseCcms[48]                        
+{0x0F12, 0xFF24},	//FF24//FF3E //FF03       //#TVAR_wbt_pBaseCcms[49]                        
+{0x0F12, 0x020B},	//020B//01FC //0226       //#TVAR_wbt_pBaseCcms[50]                        
+{0x0F12, 0xFEE4},	//FEE4//FEFA //FECC       //#TVAR_wbt_pBaseCcms[51]                        
+{0x0F12, 0x0177},	//0177//0169 //0198       //#TVAR_wbt_pBaseCcms[52]                        
+{0x0F12, 0x0168},	//0168//015C //0171       //#TVAR_wbt_pBaseCcms[53]                        
+{0x0F12,  0x01B0},	//0206       //#TVAR_wbt_pBaseCcms[54] // CWF                 
+{0x0F12,  0xFF91},	//FF64       //#TVAR_wbt_pBaseCcms[55]                        
+{0x0F12,  0xFFA6},	//FF7C       //#TVAR_wbt_pBaseCcms[56]                        
+{0x0F12,  0xFED5},	//FED4       //#TVAR_wbt_pBaseCcms[57]                        
+{0x0F12,  0x0238},	//023A       //#TVAR_wbt_pBaseCcms[58]                        
+{0x0F12,  0xFF11},	//FF10       //#TVAR_wbt_pBaseCcms[59]                        
+{0x0F12,  0x0005},	//FFD0       //#TVAR_wbt_pBaseCcms[60]                        
+{0x0F12,  0xFFE8},	//FFA6       //#TVAR_wbt_pBaseCcms[61]                        
+{0x0F12,  0x016E},	//01E4       //#TVAR_wbt_pBaseCcms[62]                        
+{0x0F12,  0x00F1},	//00F0       //#TVAR_wbt_pBaseCcms[63]                        
+{0x0F12,  0x015D},	//015B       //#TVAR_wbt_pBaseCcms[64]                        
+{0x0F12,  0xFECB},	//FECE       //#TVAR_wbt_pBaseCcms[65]                        
+{0x0F12,  0x0224},	//0225       //#TVAR_wbt_pBaseCcms[66]                        
+{0x0F12,  0xFF03},	//FF01       //#TVAR_wbt_pBaseCcms[67]                        
+{0x0F12,  0x0214},	//0215       //#TVAR_wbt_pBaseCcms[68]                        
+{0x0F12,  0xFEC5},	//FEC3       //#TVAR_wbt_pBaseCcms[69]                        
+{0x0F12,  0x017B},	//017C       //#TVAR_wbt_pBaseCcms[70]                        
+{0x0F12,  0x0167},	//0167       //#TVAR_wbt_pBaseCcms[71]                        
 {0x0F12, 0x01D6},   //#TVAR_wbt_pBaseCcms[72] // D50                 
 {0x0F12, 0xFF94},   //#TVAR_wbt_pBaseCcms[73]                        
 {0x0F12, 0xFFCC},   //#TVAR_wbt_pBaseCcms[74]                        
@@ -3438,22 +3128,22 @@ static struct s5k5cag_reg initial_list[] = {
 {0x0F12, 0xFF10},   //#TVAR_wbt_pBaseCcms[87]                        
 {0x0F12, 0x0190},   //#TVAR_wbt_pBaseCcms[88]                        
 {0x0F12, 0x0145},   //#TVAR_wbt_pBaseCcms[89]                        
-{0x0F12, 0x01D6},   //#TVAR_wbt_pBaseCcms[90] // D65                 
-{0x0F12, 0xFF94},   //#TVAR_wbt_pBaseCcms[91]                        
-{0x0F12, 0xFFCC},   //#TVAR_wbt_pBaseCcms[92]                        
-{0x0F12, 0xFF1F},   //#TVAR_wbt_pBaseCcms[93]                        
-{0x0F12, 0x021F},   //#TVAR_wbt_pBaseCcms[94]                        
-{0x0F12, 0xFF1F},   //#TVAR_wbt_pBaseCcms[95]                        
-{0x0F12, 0xFFE4},   //#TVAR_wbt_pBaseCcms[96]                        
-{0x0F12, 0xFFED},   //#TVAR_wbt_pBaseCcms[97]                        
-{0x0F12, 0x01C8},   //#TVAR_wbt_pBaseCcms[98]                        
-{0x0F12, 0x010F},   //#TVAR_wbt_pBaseCcms[99]                        
-{0x0F12, 0x0150},   //#TVAR_wbt_pBaseCcms[100]                       
-{0x0F12, 0xFF16},   //#TVAR_wbt_pBaseCcms[101]                       
-{0x0F12, 0x0210},   //#TVAR_wbt_pBaseCcms[102]                       
-{0x0F12, 0xFF5D},   //#TVAR_wbt_pBaseCcms[103]                       
-{0x0F12, 0x0244},   //#TVAR_wbt_pBaseCcms[104]                       
-{0x0F12, 0xFF10},   //#TVAR_wbt_pBaseCcms[105]                       
+{0x0F12,  0x018B},	//01D6       //#TVAR_wbt_pBaseCcms[90] // D65                 
+{0x0F12,  0xFFBF},	//FF94       //#TVAR_wbt_pBaseCcms[91]                        
+{0x0F12,  0xFFEC},	//FFCC       //#TVAR_wbt_pBaseCcms[92]                        
+{0x0F12,  0xFF1F},	//FF1F       //#TVAR_wbt_pBaseCcms[93]                        
+{0x0F12,  0x021F},	//021F       //#TVAR_wbt_pBaseCcms[94]                        
+{0x0F12,  0xFF1F},	//FF1F       //#TVAR_wbt_pBaseCcms[95]                        
+{0x0F12,  0xFFE4},	//FFE4       //#TVAR_wbt_pBaseCcms[96]                        
+{0x0F12,  0xFFED},	//FFED       //#TVAR_wbt_pBaseCcms[97]                        
+{0x0F12,  0x01C8},	//01C8       //#TVAR_wbt_pBaseCcms[98]                        
+{0x0F12,  0x00FC},	//010F       //#TVAR_wbt_pBaseCcms[99]                        
+{0x0F12,  0x0135},	//0150       //#TVAR_wbt_pBaseCcms[100]                       
+{0x0F12,  0xFF45},	//FF16       //#TVAR_wbt_pBaseCcms[101]                       
+{0x0F12,  0x0210},	//0210       //#TVAR_wbt_pBaseCcms[102]                       
+{0x0F12,  0xFF5D},	//FF5D       //#TVAR_wbt_pBaseCcms[103]                       
+{0x0F12,  0x0244},	//0244       //#TVAR_wbt_pBaseCcms[104]                       
+{0x0F12,  0xFF10},	//FF10       //#TVAR_wbt_pBaseCcms[105]                       
 {0x0F12, 0x0190},   //#TVAR_wbt_pBaseCcms[106]                       
 {0x0F12, 0x0145},   //#TVAR_wbt_pBaseCcms[107]                       
 {0x002A, 0x06A0},   // Outdoor CCM address // 7000_3380              
@@ -3479,231 +3169,273 @@ static struct s5k5cag_reg initial_list[] = {
 {0x0F12, 0x0190},   //#TVAR_wbt_pOutdoorCcm[16]                  
 {0x0F12, 0x0145},   //#TVAR_wbt_pOutdoorCcm[17]   
 //================================================================================================
-// SET AWB
+//SETAWB
 //================================================================================================
-// Indoor boundary
+//Indoorboundary
 //
-{0x002A, 0x0C48},  
-{0x0F12, 0x038B},  //awbb_IndoorGrZones_m_BGrid[0]
-{0x0F12, 0x03C0},  //awbb_IndoorGrZones_m_BGrid[1]
-{0x0F12, 0x033D},  //awbb_IndoorGrZones_m_BGrid[2]
-{0x0F12, 0x03C5},  //awbb_IndoorGrZones_m_BGrid[3]
-{0x0F12, 0x0303},  //awbb_IndoorGrZones_m_BGrid[4]
-{0x0F12, 0x03AE},  //awbb_IndoorGrZones_m_BGrid[5]
-{0x0F12, 0x02CF},  //awbb_IndoorGrZones_m_BGrid[6]
-{0x0F12, 0x0387},  //awbb_IndoorGrZones_m_BGrid[7]
-{0x0F12, 0x02A0},  //awbb_IndoorGrZones_m_BGrid[8]
-{0x0F12, 0x0360},  //awbb_IndoorGrZones_m_BGrid[9]
-{0x0F12, 0x027C},  //awbb_IndoorGrZones_m_BGrid[10]
-{0x0F12, 0x0335},  //awbb_IndoorGrZones_m_BGrid[11]
-{0x0F12, 0x025D},  //awbb_IndoorGrZones_m_BGrid[12]
-{0x0F12, 0x030A},  //awbb_IndoorGrZones_m_BGrid[13]
-{0x0F12, 0x0243},  //awbb_IndoorGrZones_m_BGrid[14]
-{0x0F12, 0x02E5},  //awbb_IndoorGrZones_m_BGrid[15]
-{0x0F12, 0x0227},  //awbb_IndoorGrZones_m_BGrid[16]
-{0x0F12, 0x02BD},  //awbb_IndoorGrZones_m_BGrid[17]
-{0x0F12, 0x020E},  //awbb_IndoorGrZones_m_BGrid[18]
-{0x0F12, 0x029E},  //awbb_IndoorGrZones_m_BGrid[19]
-{0x0F12, 0x01F7},  //awbb_IndoorGrZones_m_BGrid[20]
-{0x0F12, 0x027F},  //awbb_IndoorGrZones_m_BGrid[21]
-{0x0F12, 0x01E3},  //awbb_IndoorGrZones_m_BGrid[22]
-{0x0F12, 0x0262},  //awbb_IndoorGrZones_m_BGrid[23]
-{0x0F12, 0x01D1},  //awbb_IndoorGrZones_m_BGrid[24]
-{0x0F12, 0x024D},  //awbb_IndoorGrZones_m_BGrid[25]
-{0x0F12, 0x01BD},  //awbb_IndoorGrZones_m_BGrid[26]
-{0x0F12, 0x0232},  //awbb_IndoorGrZones_m_BGrid[27]
-{0x0F12, 0x01B2},  //awbb_IndoorGrZones_m_BGrid[28]
-{0x0F12, 0x021A},  //awbb_IndoorGrZones_m_BGrid[29]
-{0x0F12, 0x01B3},  //awbb_IndoorGrZones_m_BGrid[30]
-{0x0F12, 0x0201},  //awbb_IndoorGrZones_m_BGrid[31]
-{0x0F12, 0x01BC},  //awbb_IndoorGrZones_m_BGrid[32]
-{0x0F12, 0x01DD},  //awbb_IndoorGrZones_m_BGrid[33]
-{0x0F12, 0x0000},  //awbb_IndoorGrZones_m_BGrid[34]
-{0x0F12, 0x0000},  //awbb_IndoorGrZones_m_BGrid[35]
-{0x0F12, 0x0000},  //awbb_IndoorGrZones_m_BGrid[36]
-{0x0F12, 0x0000},  //awbb_IndoorGrZones_m_BGrid[37]
-{0x0F12, 0x0000},  //awbb_IndoorGrZones_m_BGrid[38]
-{0x0F12, 0x0000},  //awbb_IndoorGrZones_m_BGrid[39]
-{0x0F12, 0x0005},  // #awbb_IndoorGrZones_m_GridStep
-{0x002A, 0x0CA0},  
-{0x0F12, 0x011A},  //00E8	// #awbb_IndoorGrZones_m_Boffs
+{0x002A, 0x0C48},   
+{0x0F12, 0x03C8},   //awbb_IndoorGrZones_m_BGrid[0]
+{0x0F12, 0x03DE},   //awbb_IndoorGrZones_m_BGrid[1]
+{0x0F12, 0x0372},   //awbb_IndoorGrZones_m_BGrid[2]
+{0x0F12, 0x03EA},   //awbb_IndoorGrZones_m_BGrid[3]
+{0x0F12, 0x0336},   //awbb_IndoorGrZones_m_BGrid[4]
+{0x0F12, 0x03DE},   //awbb_IndoorGrZones_m_BGrid[5]
+{0x0F12, 0x0302},   //awbb_IndoorGrZones_m_BGrid[6]
+{0x0F12, 0x03A2},   //awbb_IndoorGrZones_m_BGrid[7]
+{0x0F12, 0x02C8},   //awbb_IndoorGrZones_m_BGrid[8]
+{0x0F12, 0x0368},   //awbb_IndoorGrZones_m_BGrid[9]
+{0x0F12, 0x0292},   //awbb_IndoorGrZones_m_BGrid[10]
+{0x0F12, 0x033A},   //awbb_IndoorGrZones_m_BGrid[11]
+{0x0F12, 0x0276},   //awbb_IndoorGrZones_m_BGrid[12]
+{0x0F12, 0x0306},   //awbb_IndoorGrZones_m_BGrid[13]
+{0x0F12, 0x025A},   //awbb_IndoorGrZones_m_BGrid[14]
+{0x0F12, 0x02EA},   //awbb_IndoorGrZones_m_BGrid[15]
+{0x0F12, 0x0246},   //awbb_IndoorGrZones_m_BGrid[16]
+{0x0F12, 0x02CA},   //awbb_IndoorGrZones_m_BGrid[17]
+{0x0F12, 0x0232},   //awbb_IndoorGrZones_m_BGrid[18]
+{0x0F12, 0x02B2},   //awbb_IndoorGrZones_m_BGrid[19]
+{0x0F12, 0x021E},   //awbb_IndoorGrZones_m_BGrid[20]
+{0x0F12, 0x029A},   //awbb_IndoorGrZones_m_BGrid[21]
+{0x0F12, 0x0208},   //awbb_IndoorGrZones_m_BGrid[22]
+{0x0F12, 0x027A},   //awbb_IndoorGrZones_m_BGrid[23]
+{0x0F12, 0x01EE},   //awbb_IndoorGrZones_m_BGrid[24]
+{0x0F12, 0x025C},   //awbb_IndoorGrZones_m_BGrid[25]
+{0x0F12, 0x01F0},   //awbb_IndoorGrZones_m_BGrid[26]
+{0x0F12, 0x0248},   //awbb_IndoorGrZones_m_BGrid[27]
+{0x0F12, 0x0000},   //awbb_IndoorGrZones_m_BGrid[28]
+{0x0F12, 0x0000},   //awbb_IndoorGrZones_m_BGrid[29]
+{0x0F12, 0x0000},   //awbb_IndoorGrZones_m_BGrid[30]
+{0x0F12, 0x0000},   //awbb_IndoorGrZones_m_BGrid[31]
+{0x0F12, 0x0000},   //awbb_IndoorGrZones_m_BGrid[32]
+{0x0F12, 0x0000},   //awbb_IndoorGrZones_m_BGrid[33]
+{0x0F12, 0x0000},   //awbb_IndoorGrZones_m_BGrid[34]
+{0x0F12, 0x0000},   //awbb_IndoorGrZones_m_BGrid[35]
+{0x0F12, 0x0000},   //awbb_IndoorGrZones_m_BGrid[36]
+{0x0F12, 0x0000},   //awbb_IndoorGrZones_m_BGrid[37]
+{0x0F12, 0x0000},   //awbb_IndoorGrZones_m_BGrid[38]
+{0x0F12, 0x0000},   //awbb_IndoorGrZones_m_BGrid[39]
 
-// Outdoor boudary
+{0x0F12, 0x0005},   //#awbb_IndoorGrZones_m_GridStep
+     
+{0x002A, 0x0C9C},   
+{0x0F12, 0x000E},   
+{0x002A, 0x0CA0},   
+{0x0F12, 0x0108},   //#awbb_IndoorGrZones_m_Boffs
 
-{0x002A, 0x0CA4},  
-{0x0F12, 0x026F},  //awbb_OutdoorGrZones_m_BGrid[0]
-{0x0F12, 0x029C},  //awbb_OutdoorGrZones_m_BGrid[1]
-{0x0F12, 0x0238},  //awbb_OutdoorGrZones_m_BGrid[2]
-{0x0F12, 0x0284},  //awbb_OutdoorGrZones_m_BGrid[3]
-{0x0F12, 0x0206},  //awbb_OutdoorGrZones_m_BGrid[4]
-{0x0F12, 0x0250},  //awbb_OutdoorGrZones_m_BGrid[5]
-{0x0F12, 0x01D6},  //awbb_OutdoorGrZones_m_BGrid[6]
-{0x0F12, 0x0226},  //awbb_OutdoorGrZones_m_BGrid[7]
-{0x0F12, 0x01BC},  //awbb_OutdoorGrZones_m_BGrid[8]
-{0x0F12, 0x01F6},  //awbb_OutdoorGrZones_m_BGrid[9]
-{0x0F12, 0x0000},  //awbb_OutdoorGrZones_m_BGrid[10]
-{0x0F12, 0x0000},  //awbb_OutdoorGrZones_m_BGrid[11]
-{0x0F12, 0x0000},  //awbb_OutdoorGrZones_m_BGrid[12]
-{0x0F12, 0x0000},  //awbb_OutdoorGrZones_m_BGrid[13]
-{0x0F12, 0x0000},  //awbb_OutdoorGrZones_m_BGrid[14]
-{0x0F12, 0x0000},  //awbb_OutdoorGrZones_m_BGrid[15]
-{0x0F12, 0x0000},  //awbb_OutdoorGrZones_m_BGrid[16]
-{0x0F12, 0x0000},  //awbb_OutdoorGrZones_m_BGrid[17]
-{0x0F12, 0x0000},  //awbb_OutdoorGrZones_m_BGrid[18]
-{0x0F12, 0x0000},  //awbb_OutdoorGrZones_m_BGrid[19]
-{0x0F12, 0x0000},  //awbb_OutdoorGrZones_m_BGrid[20]
-{0x0F12, 0x0000},  //awbb_OutdoorGrZones_m_BGrid[21]
-{0x0F12, 0x0000},  //awbb_OutdoorGrZones_m_BGrid[22]
-{0x0F12, 0x0000},  //awbb_OutdoorGrZones_m_BGrid[23]
-{0x0F12, 0x0005},  // #awbb_OutdoorGrZones_m_GridStep
-{0x002A, 0x0CDC},  
-{0x0F12, 0x0212},  //0204	// #awbb_OutdoorGrZones_m_Boffs
+//Outdoorboundary
+//
+{0x002A, 0x0CA4},   
+{0x0F12, 0x026E},   //#awbb_OutdoorGrZones_m_BGrid[0]
+{0x0F12, 0x02A4},   //#awbb_OutdoorGrZones_m_BGrid[1]
+{0x0F12, 0x0262},   //#awbb_OutdoorGrZones_m_BGrid[2]
+{0x0F12, 0x02A8},   //#awbb_OutdoorGrZones_m_BGrid[3]
+{0x0F12, 0x0256},   //#awbb_OutdoorGrZones_m_BGrid[4]
+{0x0F12, 0x02AE},   //#awbb_OutdoorGrZones_m_BGrid[5]
+{0x0F12, 0x0248},   //#awbb_OutdoorGrZones_m_BGrid[6]
+{0x0F12, 0x02A4},   //#awbb_OutdoorGrZones_m_BGrid[7]
+{0x0F12, 0x023E},   //#awbb_OutdoorGrZones_m_BGrid[8]
+{0x0F12, 0x029A},   //#awbb_OutdoorGrZones_m_BGrid[9]
+{0x0F12, 0x023A},   //#awbb_OutdoorGrZones_m_BGrid[10]
+{0x0F12, 0x0290},   //#awbb_OutdoorGrZones_m_BGrid[11]
+{0x0F12, 0x023A},   //#awbb_OutdoorGrZones_m_BGrid[12]
+{0x0F12, 0x027E},   //#awbb_OutdoorGrZones_m_BGrid[13]
+{0x0F12, 0x0244},   //#awbb_OutdoorGrZones_m_BGrid[14]
+{0x0F12, 0x0266},   //#awbb_OutdoorGrZones_m_BGrid[15]
+{0x0F12, 0x0000},   //#awbb_OutdoorGrZones_m_BGrid[16]
+{0x0F12, 0x0000},   //#awbb_OutdoorGrZones_m_BGrid[17]
+{0x0F12, 0x0000},   //#awbb_OutdoorGrZones_m_BGrid[18]
+{0x0F12, 0x0000},   //#awbb_OutdoorGrZones_m_BGrid[19]
+{0x0F12, 0x0000},   //#awbb_OutdoorGrZones_m_BGrid[20]
+{0x0F12, 0x0000},   //#awbb_OutdoorGrZones_m_BGrid[21]
+{0x0F12, 0x0000},   //#awbb_OutdoorGrZones_m_BGrid[22]
+{0x0F12, 0x0000},   //#awbb_OutdoorGrZones_m_BGrid[23]
+     
+{0x0F12, 0x0004},   //#awbb_OutdoorGrZones_m_GridStep
+{0x002A, 0x0CD8},   
+{0x0F12, 0x0008},   //#awbb_OutdoorGrZones_m_Boffs
+{0x002A, 0x0CDC},   
+{0x0F12, 0x0204},   
+
+
+//Outdoordetectionzone??
+{0x002A, 0x0D88},   
+{0x0F12, 0x00C6},   //0038//#awbb_OutdoorDetectionZone_m_BGrid[0]_m_left
+{0x0F12, 0x0124},   //0074//#awbb_OutdoorDetectionZone_m_BGrid[0]_m_right
+{0x0F12, 0x007B},   //FFF1//#awbb_OutdoorDetectionZone_m_BGrid[1]_m_left
+{0x0F12, 0x015D},   //00BF//#awbb_OutdoorDetectionZone_m_BGrid[1]_m_right
+{0x0F12, 0x0039},   //FF9B//#awbb_OutdoorDetectionZone_m_BGrid[2]_m_left
+{0x0F12, 0x0179},   //00DB//#awbb_OutdoorDetectionZone_m_BGrid[2]_m_right
+{0x0F12, 0xFFF4},   //FF56//#awbb_OutdoorDetectionZone_m_BGrid[3]_m_left
+{0x0F12, 0x018E},   //00F0//#awbb_OutdoorDetectionZone_m_BGrid[3]_m_right
+{0x0F12, 0xFF9D},   //FEFF//#awbb_OutdoorDetectionZone_m_BGrid[4]_m_left
+{0x0F12, 0x01AD},   //010F//#awbb_OutdoorDetectionZone_m_BGrid[4]_m_right
+{0x0F12, 0x0E74},   //0E74//#awbb_OutdoorDetectionZone_ZInfo_m_AbsGridStep
+{0x0F12, 0x0000},   
+{0x0F12, 0x0005},   //#awbb_OutdoorDetectionZone_ZInfo_m_GridSz
+{0x0F12, 0x0000},   
+{0x0F12, 0x08A5},   //274E//#awbb_OutdoorDetectionZone_ZInfo_m_NBoffs
+{0x0F12, 0x0000},   
+{0x0F12, 0x1DCC},   //#awbb_OutdoorDetectionZone_ZInfo_m_MaxNB
+{0x0F12, 0x0000},   
+
+//LowBrboundary
+{0x002A, 0x0CE0},   
+{0x0F12, 0x03D4},   //#awbb_LowBrGrZones_m_BGrid[0]
+{0x0F12, 0x043E},   //#awbb_LowBrGrZones_m_BGrid[1]
+{0x0F12, 0x035C},   //#awbb_LowBrGrZones_m_BGrid[2]
+{0x0F12, 0x0438},   //#awbb_LowBrGrZones_m_BGrid[3]
+{0x0F12, 0x02F0},   //#awbb_LowBrGrZones_m_BGrid[4]
+{0x0F12, 0x042D},   //#awbb_LowBrGrZones_m_BGrid[5]
+{0x0F12, 0x029A},   //#awbb_LowBrGrZones_m_BGrid[6]
+{0x0F12, 0x03EF},   //#awbb_LowBrGrZones_m_BGrid[7]
+{0x0F12, 0x025E},   //#awbb_LowBrGrZones_m_BGrid[8]
+{0x0F12, 0x0395},   //#awbb_LowBrGrZones_m_BGrid[9]
+{0x0F12, 0x022E},   //#awbb_LowBrGrZones_m_BGrid[10]
+{0x0F12, 0x0346},   //#awbb_LowBrGrZones_m_BGrid[11]
+{0x0F12, 0x0200},   //#awbb_LowBrGrZones_m_BGrid[12]
+{0x0F12, 0x02F6},   //#awbb_LowBrGrZones_m_BGrid[13]
+{0x0F12, 0x01CE},   //#awbb_LowBrGrZones_m_BGrid[14]
+{0x0F12, 0x02C8},   //#awbb_LowBrGrZones_m_BGrid[15]
+{0x0F12, 0x01BB},   //#awbb_LowBrGrZones_m_BGrid[16]
+{0x0F12, 0x0287},   //#awbb_LowBrGrZones_m_BGrid[17]
+{0x0F12, 0x01E2},   //#awbb_LowBrGrZones_m_BGrid[18]
+{0x0F12, 0x0239},   //#awbb_LowBrGrZones_m_BGrid[19]
+{0x0F12, 0x0000},   //#awbb_LowBrGrZones_m_BGrid[20]
+{0x0F12, 0x0000},   //#awbb_LowBrGrZones_m_BGrid[21]
+{0x0F12, 0x0000},   //#awbb_LowBrGrZones_m_BGrid[22]
+{0x0F12, 0x0000},   //#awbb_LowBrGrZones_m_BGrid[23]
  
-//Outdoor detecor
-{0x002A, 0x0DA0},  
-{0x0F12, 0x0005},  
-{0x002A, 0x0D88},  
-{0x0F12, 0x0048},  
-{0x0F12, 0x0084},  
-{0x0F12, 0x0001},  
-{0x0F12, 0x00CF},  
-{0x0F12, 0xFFAB},  
-{0x0F12, 0x00EB},  
-{0x0F12, 0xFF66},  
-{0x0F12, 0x0100},  
-{0x0F12, 0xFF0F},  
-{0x0F12, 0x011F},  
-{0x0F12, 0x0E74},  
-{0x002A, 0x0DA8},  
-{0x0F12, 0x1701},  
-{0x002A, 0x0DA4},  
-{0x0F12, 0x0691},  
+{0x0F12, 0x0006},   //#awbb_LowBrGrZones_m_GridStep
+{0x002A, 0x0D18},   
+{0x0F12, 0x00AE},   //#awbb_LowBrGrZones_m_Boffs
 
-// LowBr boundry
-{0x002A, 0x0CE0},  
-{0x0F12, 0x0376},  // #awbb_LowBrGrZones_m_BGrid[0]
-{0x0F12, 0x03F4},  // #awbb_LowBrGrZones_m_BGrid[1]
-{0x0F12, 0x0304},  // #awbb_LowBrGrZones_m_BGrid[2]
-{0x0F12, 0x03F4},  // #awbb_LowBrGrZones_m_BGrid[3]
-{0x0F12, 0x029A},  // #awbb_LowBrGrZones_m_BGrid[4]
-{0x0F12, 0x03E6},  // #awbb_LowBrGrZones_m_BGrid[5]
-{0x0F12, 0x024E},  // #awbb_LowBrGrZones_m_BGrid[6]
-{0x0F12, 0x039A},  // #awbb_LowBrGrZones_m_BGrid[7]
-{0x0F12, 0x020E},  // #awbb_LowBrGrZones_m_BGrid[8]
-{0x0F12, 0x034C},  // #awbb_LowBrGrZones_m_BGrid[9]
-{0x0F12, 0x01E0},  // #awbb_LowBrGrZones_m_BGrid[10]
-{0x0F12, 0x02FF},  // #awbb_LowBrGrZones_m_BGrid[11]
-{0x0F12, 0x01AD},  // #awbb_LowBrGrZones_m_BGrid[12]
-{0x0F12, 0x02B8},  // #awbb_LowBrGrZones_m_BGrid[13]
-{0x0F12, 0x018A},  // #awbb_LowBrGrZones_m_BGrid[14]
-{0x0F12, 0x0284},  // #awbb_LowBrGrZones_m_BGrid[15]
-{0x0F12, 0x0187},  // #awbb_LowBrGrZones_m_BGrid[16]
-{0x0F12, 0x025A},  // #awbb_LowBrGrZones_m_BGrid[17]
-{0x0F12, 0x018D},  // #awbb_LowBrGrZones_m_BGrid[18]
-{0x0F12, 0x01F6},  // #awbb_LowBrGrZones_m_BGrid[19]
-{0x0F12, 0x0000},  // #awbb_LowBrGrZones_m_BGrid[20]
-{0x0F12, 0x0000},  // #awbb_LowBrGrZones_m_BGrid[21]
-{0x0F12, 0x0000},  // #awbb_LowBrGrZones_m_BGrid[22]
-{0x0F12, 0x0000},  // #awbb_LowBrGrZones_m_BGrid[23]
-{0x0F12, 0x0006},  // #awbb_LowBrGrZones_m_GridStep
-{0x002A, 0x0D18},  
-{0x0F12, 0x00FA},  //00FE	// #awbb_LowBrGrZones_m_Boffs
-                            
-// AWB ETC                  
-{0x002A, 0x0D1C}, 
-{0x0F12, 0x0340},  //037C	// #awbb_CrclLowT_R_c
-{0x002A, 0x0D20},  
-{0x0F12, 0x016C},  //0157	// #awbb_CrclLowT_B_c
-{0x002A, 0x0D24},  
-{0x0F12, 0x49D5},   //3EB8	// #awbb_CrclLowT_Rad_c
-                            
-{0x002A, 0x0D2C},  
-{0x0F12, 0x0131},  //013D	// #awbb_IntcR
-{0x0F12, 0x012C},  //011E	// #awbb_IntcB
- 
-{0x002A, 0x0D28},  
-{0x0F12, 0x0290},  // #awbb_OutdoorWP_r
-{0x0F12, 0x0240},  // #awbb_OutdoorWP_b
+//AWBETC
+{0x002A, 0x0D1C},   
+{0x0F12, 0x037C},   //#awbb_CrclLowT_R_c
+{0x002A, 0x0D20},   
+{0x0F12, 0x0157},   //#awbb_CrclLowT_B_c
+{0x002A, 0x0D24},   
+{0x0F12, 0x3EB8},   //#awbb_CrclLowT_Rad_c
+     
+{0x002A, 0x0D2C},   
+{0x0F12, 0x013D},   //#awbb_IntcR
+{0x0F12, 0x011E},   //#awbb_IntcB
+     
+{0x002A, 0x0D28},   
+{0x0F12, 0x0270},   //#awbb_OutdoorWP_r
+{0x0F12, 0x0240},   //#awbb_OutdoorWP_b
 
-{0x002A, 0x0D5C},  
-{0x0F12, 0x7FFF},  // #awbb_LowTempRB
-{0x0F12, 0x0050},  // #awbb_LowTemp_RBzone
+//002A0E4C
+//0F120000//#awbboost_useBoosting4Outdoor
 
-{0x002A, 0x0D46},  
-{0x0F12, 0x0546},  // #awbb_MvEq_RBthresh
+//002A0D4C
+//0F120187//#awbb_GamutWidthThr1
+//0F1200CF//#awbb_GamutHeightThr1
+//0F12000D//#awbb_GamutWidthThr2
+//0F12000A//#awbb_GamutHeightThr2
 
-// AWB initialpoint
-{0x002A, 0x0E44},  
-{0x0F12, 0x053C},  // #define awbb_GainsInit_0_
-{0x0F12, 0x0400},  // #define awbb_GainsInit_1_
-{0x0F12, 0x055C},  // #define awbb_GainsInit_2_
-// Set AWB gloal offset
-{0x002A, 0x0E36},  
-{0x0F12, 0x0000},  //#awbb_RGainOff
-{0x0F12, 0x0000},  //#awbb_BGainOff
-{0x0F12, 0x0000},  //#awbb_GGainOff
+{0x002A, 0x0D5C},
+{0x0F12, 0x7FFF},   //#awbb_LowTempRB
+{0x0F12, 0x0050},   //#awbb_LowTemp_RBzone
+     
+{0x002A, 0x2316},
+{0x0F12, 0x0006},
+     
+{0x002A, 0x0D46},   
+{0x0F12, 0x0550},   //#awbb_MvEq_RBthresh
+
+//002A0D4A
+//0F12000A//#awbb_MovingScale10
+
+//002A0E3E
+//0F120000//#awbb_rpl_InvalidOutdooroff
+//002A22DE
+//0F120004//#Mon_AWB_ByPassMode//[0]Outdoor[1]LowBr[2]LowTemp
+
+//002A337C
+//0F1200B3//#Tune_TP_ChMoveToNearR
+//0F120040//#Tune_TP_AvMoveToGamutDist
+
+{0x002A, 0x0E44},
+//#ifdefS5K5CAGX_MTK_INTERNAL_USE
+//AWBinitialpointcleartheInitialawbgaintosolvetheenterpreviewyellowissue.
+{0x0F12, 0x0525},//#defineawbb_GainsInit_0_
+{0x0F12, 0x0400},//#defineawbb_GainsInit_1_
+{0x0F12, 0x078C},//#defineawbb_GainsInit_2_
+//#else
+//0F12 053C//#defineawbb_GainsInit_0_
+//0F12 0400//#defineawbb_GainsInit_1_
+//0F12 055C//#defineawbb_GainsInit_2_
+//#endif
+
+//SetAWBglobaloffset
+{0x002A, 0x0E36},
+{0x0F12, 0x0028},   //#awbb_RGainOff
+{0x0F12, 0xFFD8},   //#awbb_BGainOff
+{0x0F12, 0x0000},   //#awbb_GGainOff
+
+//0DD4
+{0x002A, 0x0DD4},   
+{0x0F12, 0x0000},   //awbb_GridCorr_R[0]//
+{0x0F12, 0x003C},   //awbb_GridCorr_R[1]//
+{0x0F12, 0xFFCE},//awbb_GridCorr_R[2]//
+{0x0F12, 0xFF9C},//awbb_GridCorr_R[3]//
+{0x0F12, 0xFF9C},//awbb_GridCorr_R[4]//
+{0x0F12, 0xFF9C},//awbb_GridCorr_R[5]//
+{0x0F12, 0x0000},//awbb_GridCorr_R[6]//
+{0x0F12, 0x003C},//awbb_GridCorr_R[7]//
+{0x0F12, 0xFFCE},//awbb_GridCorr_R[8]//
+{0x0F12, 0xFF9C},//0000//awbb_GridCorr_R[9]//
+{0x0F12, 0xFF9C},//awbb_GridCorr_R[10]//
+{0x0F12, 0xFF9C},//awbb_GridCorr_R[11]//     
+{0x0F12, 0x0000},//awbb_GridCorr_R[12]//
+{0x0F12, 0x003C},//awbb_GridCorr_R[13]//
+{0x0F12, 0xFFCE},//awbb_GridCorr_R[14]//
+{0x0F12, 0xFF9C},//awbb_GridCorr_R[15]//
+{0x0F12, 0xFF9C},//awbb_GridCorr_R[16]//
+{0x0F12, 0xFF9C},//awbb_GridCorr_R[17]//     
+{0x0F12, 0x0000},//awbb_GridCorr_B[0]///
+{0x0F12, 0x0078},//awbb_GridCorr_B[1]//
+{0x0F12, 0x0096},//awbb_GridCorr_B[2]//
+{0x0F12, 0x005A},//awbb_GridCorr_B[3]//
+{0x0F12, 0x005A},//awbb_GridCorr_B[4]//
+{0x0F12, 0x005A},//awbb_GridCorr_B[5]//     
+{0x0F12, 0x0000},//awbb_GridCorr_B[6]//
+{0x0F12, 0x0078},//awbb_GridCorr_B[7]//
+{0x0F12, 0x0096},//awbb_GridCorr_B[8]//
+{0x0F12, 0x005A},//awbb_GridCorr_B[9]//
+{0x0F12, 0x005A},//awbb_GridCorr_B[10]//
+{0x0F12, 0x005A},//awbb_GridCorr_B[11]//     
+{0x0F12, 0x0000},//awbb_GridCorr_B[12]//
+{0x0F12, 0x0078},//awbb_GridCorr_B[13]//
+{0x0F12, 0x0096},//awbb_GridCorr_B[14]//
+{0x0F12, 0x005A},//awbb_GridCorr_B[15]//
+{0x0F12, 0x005A},//awbb_GridCorr_B[16]//
+{0x0F12, 0x005A},//awbb_GridCorr_B[17]//
+
+{0x0F12, 0x02D9},   //awbb_GridConst_1[0]//
+{0x0F12, 0x0357},   //awbb_GridConst_1[1]//
+{0x0F12, 0x03D1},   //awbb_GridConst_1[2]//
+
+
+{0x0F12, 0x0DFE},   //0DF6//0E4F//0DE9//0DE9//awbb_GridConst_2[0]//
+{0x0F12, 0x0ED8},   //0EDD//0EDD//0EDD//awbb_GridConst_2[1]//
+{0x0F12, 0x0F33},   //0F42//0F42//0F42//awbb_GridConst_2[2]//
+{0x0F12, 0x0F5C},   //0F4E//0F4E//0F54//awbb_GridConst_2[3]//
+{0x0F12, 0x0F8F},   //0F99//0F99//0FAE//awbb_GridConst_2[4]//
+{0x0F12, 0x1006},   //1006//1006//1011//awbb_GridConst_2[5]//
+     
+{0x0F12, 0x00AC},   //00BA//awbb_GridCoeff_R_1
+{0x0F12, 0x00BD},   //00AF//awbb_GridCoeff_B_1
+{0x0F12, 0x0049},   //0049//awbb_GridCoeff_R_2
+{0x0F12, 0x00F5},   //00F5//awbb_GridCoeff_B_2
 
 //================================================================================================
-// SET GRID OFFSET
+//SETGRIDOFFSET
 //================================================================================================
-// Not used
-{0x002A, 0x0E4A},  
-{0x0F12, 0x0002},  // #awbb_GridEnable
-
-{0x002A, 0x0DD4},  
-{0x0F12, 0x0032},  //awbb_GridCorr_R[0] //
-{0x0F12, 0x0032},  //awbb_GridCorr_R[1] //
-{0x0F12, 0x0032},  //awbb_GridCorr_R[2] //
-{0x0F12, 0xFFE2},  //awbb_GridCorr_R[3] //  001E
-{0x0F12, 0x001E},  //awbb_GridCorr_R[4] //
-{0x0F12, 0x0064},  //awbb_GridCorr_R[5] //
-{0x0F12, 0x0000},  //awbb_GridCorr_R[6] //  0032
-{0x0F12, 0x0000},  //awbb_GridCorr_R[7] //  0032
-{0x0F12, 0x0032},  //awbb_GridCorr_R[8] //
-{0x0F12, 0xFFCE},  //awbb_GridCorr_R[9] // 001E FFE2
-{0x0F12, 0x0000},  //awbb_GridCorr_R[10] //001E
-{0x0F12, 0x0064},  //awbb_GridCorr_R[11] //
-{0x0F12, 0x0032},  //awbb_GridCorr_R[12] //
-{0x0F12, 0x0032},  //awbb_GridCorr_R[13] //
-{0x0F12, 0x0032},  //awbb_GridCorr_R[14] //
-{0x0F12, 0x001E},  //awbb_GridCorr_R[15] //
-{0x0F12, 0x001E},  //awbb_GridCorr_R[16] //
-{0x0F12, 0x0064},  //awbb_GridCorr_R[17] //
-{0x0F12, 0xFFE2},  //awbb_GridCorr_B[0] ////
-{0x0F12, 0x0000},  //awbb_GridCorr_B[1] //
-{0x0F12, 0x0014},  //awbb_GridCorr_B[2] //
-{0x0F12, 0x001E},  //awbb_GridCorr_B[3] //
-{0x0F12, 0xFFCE},  //awbb_GridCorr_B[4] //
-{0x0F12, 0xFFCE},  //awbb_GridCorr_B[5] //
-{0x0F12, 0xFFE2},  //awbb_GridCorr_B[6] //
-{0x0F12, 0x0000},  //awbb_GridCorr_B[7] //
-{0x0F12, 0x0014},  //awbb_GridCorr_B[8] //
-{0x0F12, 0x001E},  //awbb_GridCorr_B[9] //
-{0x0F12, 0xFFCE},  //awbb_GridCorr_B[10] //
-{0x0F12, 0xFFCE},  //awbb_GridCorr_B[11] //
-{0x0F12, 0xFFE2},  //awbb_GridCorr_B[12] //
-{0x0F12, 0x0000},  //awbb_GridCorr_B[13] //
-{0x0F12, 0x0014},  //awbb_GridCorr_B[14] //
-{0x0F12, 0x001E},  //awbb_GridCorr_B[15] //
-{0x0F12, 0xFFCE},  //awbb_GridCorr_B[16] //
-{0x0F12, 0xFFCE},  //awbb_GridCorr_B[17] //
-
-
-{0x0F12, 0x02D9},  //awbb_GridConst_1[0] //
-{0x0F12, 0x0357},  //awbb_GridConst_1[1] //
-{0x0F12, 0x03D1},  //awbb_GridConst_1[2] //
-
-{0x0F12, 0x0DF6},  //0E4F//0DE9//0DE9//awbb_GridConst_2[0] //
-{0x0F12, 0x0EB9},  //0EDD//0EDD//0EDD//awbb_GridConst_2[1] //
-{0x0F12, 0x0F42},  //0F42//0F42//0F42//awbb_GridConst_2[2] //
-{0x0F12, 0x0F4E},  //0F4E//0F4E//0F54//awbb_GridConst_2[3] //
-{0x0F12, 0x0F99},  //0F99//0F99//0FAE//awbb_GridConst_2[4] //
-{0x0F12, 0x1006},  //1006//1006//1011//awbb_GridConst_2[5] //
-
-{0x0F12, 0x00AC},  //00BA//awbb_GridCoeff_R_1
-{0x0F12, 0x00BD},  //00AF//awbb_GridCoeff_B_1
-{0x0F12, 0x0049},  //0049//awbb_GridCoeff_R_2
-{0x0F12, 0x00F5},  //00F5//awbb_GridCoeff_B_2
+//Notused
+{0x002A, 0x0E4A},   
+{0x0F12, 0x0002},   //#awbb_GridEnable
 
 //================================================================================================
 // SET GAMMA
